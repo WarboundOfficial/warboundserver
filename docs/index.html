@@ -141,6 +141,13 @@
   .tier .wk { font: 600 .72rem var(--display); letter-spacing: .2em; text-transform: uppercase; color: var(--frost); }
   .tier .t { font: 700 2.2rem/1 var(--display); }
   .tier p { margin: 0; color: var(--frost); font-size: .92rem; }
+  .unlocks { list-style: none; margin: 6px 0 0; padding: 10px 0 0; border-top: 1px solid var(--line); display: grid; gap: 5px; font-size: .86rem; }
+  .unlocks li { padding-left: 20px; position: relative; color: var(--snow); }
+  .unlocks li::before { content: "\2713"; position: absolute; left: 0; color: var(--signal); font-weight: 700; }
+  .unlocks li.off { color: var(--frost); }
+  .unlocks li.off::before { content: "\2715"; color: var(--blood); }
+  .unlocks li.new { color: var(--snow); font-weight: 600; }
+  .unlocks li.new::before { content: "\2605"; color: var(--ember); }
   .tier:nth-child(1) .t { color: #c9ccd1; } .tier:nth-child(2) .t { color: var(--ice); } .tier:nth-child(3) .t { color: var(--ember); } .tier:nth-child(4) .t { color: var(--blood); }
   .tier::after { content: ""; position: absolute; left: 0; right: 0; bottom: 0; height: 3px; }
   .tier:nth-child(1)::after { background: #c9ccd1; } .tier:nth-child(2)::after { background: var(--ice); } .tier:nth-child(3)::after { background: var(--ember); } .tier:nth-child(4)::after { background: var(--blood); }
@@ -343,7 +350,7 @@
       <div class="sec-head">
         <div class="sec-tag">Raid rules</div>
         <h2 id="raid-title">Raid on the weekend, rest during the week</h2>
-        <p>Hard raids only run on the weekend, so you can go to work on Monday without losing your base overnight. Only doors can be blown, with C4, and build restrictions stop mega-bases, so raiding stays fair for attackers and defenders.</p>
+        <p>Hard raids only run on the weekend and start in week 2 of the wipe, so you can build up first and go to work on Monday without losing your base overnight. Only doors can be blown, with C4, and build restrictions stop mega-bases, so raiding stays fair for attackers and defenders.</p>
       </div>
       <div class="raid-grid">
         <div class="week">
@@ -363,21 +370,25 @@
           </div>
         </div>
         <div class="raid-cards">
-          <div class="rcard"><span class="k">Hard raid</span><span class="v">Fri 20:00 → Sun 00:00</span><p>Only doors and gates can be raided, and you need C4 to blow them. Walls can't be destroyed.</p></div>
+          <div class="rcard"><span class="k">Hard raid</span><span class="v">Fri 20:00 → Sun 00:00</span><p>From week 2 (T2). Only doors and gates can be raided, and you need C4 to blow them. Walls can't be destroyed.</p></div>
           <div class="rcard soft"><span class="k">Soft raid</span><span class="v">24/7</span><p>Storage can be cracked any time with a hacking tablet. Safes, lockers and crates are never fully safe.</p></div>
         </div>
       </div>
 
       <div class="sec-head" style="margin-top: 64px">
         <div class="sec-tag">Every wipe</div>
-        <h2>Events level up every week</h2>
-        <p>All events are wipe-based. They start easy and get harder and richer every week, so a wipe never gets boring.</p>
+        <h2>The wipe levels up every week</h2>
+        <p>All events are wipe-based. Week 1 is for building up in peace, then raids and helicopters open up and the loot gets better every week, so a wipe never gets boring.</p>
       </div>
       <div class="tiers">
-        <div class="tier"><span class="wk">Week 1</span><span class="t">T1</span><p>Get going: basic gear and first bases.</p></div>
-        <div class="tier"><span class="wk">Week 2</span><span class="t">T2</span><p>Better loot, tougher fights.</p></div>
-        <div class="tier"><span class="wk">Week 3</span><span class="t">T3</span><p>High-tier weapons and armor.</p></div>
-        <div class="tier"><span class="wk">Week 4</span><span class="t">T4</span><p>Endgame loot for the strongest groups.</p></div>
+        <div class="tier"><span class="wk">Week 1</span><span class="t">T1</span><p>Build up in peace: basic gear and your first base.</p>
+          <ul class="unlocks"><li class="off">No C4 raids</li><li class="off">No helicopters</li><li>Cars &amp; bikes</li></ul></div>
+        <div class="tier"><span class="wk">Week 2</span><span class="t">T2</span><p>Better loot, tougher fights.</p>
+          <ul class="unlocks"><li>C4 raids open</li><li>Helicopters</li><li>Cars &amp; bikes</li></ul></div>
+        <div class="tier"><span class="wk">Week 3</span><span class="t">T3</span><p>High-tier weapons and armor.</p>
+          <ul class="unlocks"><li>C4 raids</li><li>Helicopters</li><li>Cars &amp; bikes</li></ul></div>
+        <div class="tier"><span class="wk">Week 4</span><span class="t">T4</span><p>Endgame loot for the strongest groups.</p>
+          <ul class="unlocks"><li>C4 raids</li><li>Helicopters</li><li class="new">Armored vehicles</li><li class="new">Raid helicopters</li></ul></div>
       </div>
     </div>
   </section>
@@ -459,7 +470,7 @@
           <div class="txt">
             <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M2 8h20M12 8v4M7 12h10l2 4H5l2-4zM9 16v3M15 16v3"/></svg>
             <h3>Vehicles &amp; helicopters</h3>
-            <p>Expansion cars, boats and helis in 3rd person. Eat and drink while you drive or fly, as pilot or passenger. Rolled your car? Press <code>F6</code> to flip it.</p>
+            <p>Cars and bikes from day one, helicopters from week 2, armored vehicles and raid helis in week 4. 3rd person in every vehicle, eat and drink while you drive or fly. Rolled your car? Press <code>F6</code> to flip it.</p>
             <div class="chips"><span class="chip">Expansion</span><span class="chip">Eat while driving</span><span class="chip">Vehicle flip</span></div>
           </div>
         </article>
