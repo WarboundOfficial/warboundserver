@@ -1,0 +1,674 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>WarBound Official</title>
+<meta name="description" content="WarBound Official – two modded DayZ servers: Chernarus Winter Edition and Namalsk. Weekend raids, wipe-based events, safe teleports, endgame gear, an in-game store and an active community.">
+<meta property="og:title" content="WarBound Official">
+<meta property="og:description" content="Modded DayZ on Chernarus Winter Edition and Namalsk.">
+<meta property="og:image" content="images/logo.webp">
+<link rel="icon" href="images/logo.webp">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@500;600;700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@500&display=swap">
+<script>
+  // Images: try images/<name>.webp first, then .png, then hide the slot. So you can drop in either format.
+  function wbImg(img) {
+    if (img.src.endsWith('.webp')) { img.src = img.src.replace(/\.webp$/, '.png'); return; }
+    const slot = img.closest('[data-slot]'); if (slot) slot.remove(); else img.remove();
+  }
+</script>
+<style>
+  /* Layout: brand hero, split field – Chernarus (ice) left, Namalsk (amber) right – raid week + wipe tiers,
+     feature grid with screenshots, gallery, Warbound Store, how to join, Discord. Brand: blood red / snow / black. */
+  :root {
+    color-scheme: dark;
+    --night: #0b0c0e;  --slab: #14161a;  --slab-2: #1b1e23;  --line: #2a2d33;
+    --snow: #eceef0;   --frost: #a2a7ae;
+    --blood: #d8282b;  /* WarBound red */
+    --ice: #7cc4f0;    /* Chernarus */
+    --ember: #f2a541;  /* Namalsk */
+    --signal: #7ed957; /* online / open */
+    --display: "Chakra Petch", "Bahnschrift", "Arial Narrow", sans-serif;
+    --body: "IBM Plex Sans", "Segoe UI", system-ui, sans-serif;
+    --mono: "IBM Plex Mono", "Consolas", monospace;
+  }
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } * { transition: none !important; animation: none !important; } }
+  body { margin: 0; background: var(--night); color: var(--snow); font: 400 16px/1.6 var(--body); -webkit-font-smoothing: antialiased; }
+  a { color: inherit; }
+  img { max-width: 100%; display: block; }
+  .gutter { padding-left: max(20px, env(safe-area-inset-left, 0px)); padding-right: max(20px, env(safe-area-inset-right, 0px)); }
+  .inner { max-width: 1180px; margin: 0 auto; }
+
+  /* nav */
+  .nav { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 20; background: rgba(11,12,14,.88); backdrop-filter: blur(8px); border-bottom: 1px solid var(--line); }
+  body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-area-inset-top, 0px); z-index: 21; background: var(--night); }
+  .nav .inner { display: flex; align-items: center; gap: 18px; padding-block: 10px; }
+  .nav img { height: 34px; width: auto; }
+  .nav nav { display: flex; flex-wrap: wrap; gap: 4px 18px; margin-left: auto; font: 600 .82rem var(--display); letter-spacing: .12em; text-transform: uppercase; }
+  .nav nav a { text-decoration: none; color: var(--frost); }
+  .nav nav a:hover { color: var(--snow); }
+
+  /* hero */
+  .hero { position: relative; overflow: hidden; border-bottom: 1px solid var(--line); background: var(--night); }
+  .hero .backdrop { position: absolute; inset: 0; background: url("images/hero-bg.webp") right center / auto 120% no-repeat; opacity: .22; }
+  .hero::after { content: ""; position: absolute; inset: 0; background: linear-gradient(90deg, var(--night) 30%, rgba(11,12,14,.4) 70%, rgba(11,12,14,.85)); }
+  .hero canvas { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; opacity: .5; z-index: 1; }
+  .hero .inner { position: relative; z-index: 2; padding-block: 56px 60px; display: grid; grid-template-columns: minmax(0, 1.15fr) minmax(0, .85fr); gap: 32px; align-items: center; }
+  .hero-copy { display: grid; gap: 20px; min-width: 0; }
+  .eyebrow { font: 600 .78rem var(--display); letter-spacing: .28em; text-transform: uppercase; color: var(--frost); display: flex; align-items: center; gap: 10px; }
+  .eyebrow .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--signal); box-shadow: 0 0 10px var(--signal); }
+  h1 { font: 700 clamp(2.8rem, 7.4vw, 5.4rem)/.92 var(--display); letter-spacing: .01em; margin: 0; text-transform: uppercase; text-wrap: balance; }
+  h1 em { font-style: normal; color: var(--blood); }
+  .lede { max-width: 58ch; color: var(--frost); font-size: 1.08rem; margin: 0; }
+  .hero-actions { display: flex; flex-wrap: wrap; gap: 12px; }
+  .btn { display: inline-flex; align-items: center; gap: 8px; font: 600 .95rem var(--display); letter-spacing: .06em; text-transform: uppercase; text-decoration: none;
+    padding: 12px 20px; border-radius: 4px; border: 1px solid var(--line); background: var(--slab); color: var(--snow); cursor: pointer; }
+  .btn:hover { border-color: var(--frost); }
+  .btn:focus-visible, button:focus-visible, .nav a:focus-visible { outline: 2px solid var(--snow); outline-offset: 2px; }
+  .btn.primary { background: var(--blood); border-color: var(--blood); color: #fff; }
+  .btn.primary:hover { filter: brightness(1.1); }
+  .facts { display: flex; flex-wrap: wrap; gap: 8px 22px; color: var(--frost); font-size: .9rem; }
+  .facts b { color: var(--snow); font-weight: 600; }
+  .hero-logo { justify-self: center; width: min(460px, 100%); filter: drop-shadow(0 18px 40px rgba(0,0,0,.6)); }
+
+  /* split */
+  .split-field { display: grid; grid-template-columns: 1fr 1fr; border-bottom: 1px solid var(--line); }
+  .side { padding-block: 56px; display: grid; align-content: start; min-width: 0; }
+  .side.cherno { --accent: var(--ice); background: linear-gradient(180deg, rgba(124,196,240,.06), transparent 40%); border-right: 1px solid var(--line); }
+  .side.nam { --accent: var(--ember); background: linear-gradient(180deg, rgba(242,165,65,.06), transparent 40%); }
+  .side-inner { max-width: 560px; width: 100%; display: grid; gap: 24px; }
+  .side.cherno .side-inner { margin-left: auto; }
+  .map-tag { font: 600 .78rem var(--display); letter-spacing: .26em; text-transform: uppercase; color: var(--accent); }
+  .side h2 { font: 700 clamp(2.2rem, 4.6vw, 3.4rem)/1 var(--display); margin: 6px 0 0; text-transform: uppercase; }
+  .side .sub { color: var(--frost); margin: 8px 0 0; }
+  .banner { margin: 0; border: 1px solid var(--line); border-radius: 4px; overflow: hidden; aspect-ratio: 16 / 9; background: var(--slab); }
+  .banner img { width: 100%; height: 100%; object-fit: cover; }
+  .servername { font: 500 .82rem var(--mono); color: var(--frost); background: var(--slab); border: 1px solid var(--line); border-left: 3px solid var(--accent); padding: 10px 12px; border-radius: 3px; overflow-wrap: anywhere; }
+  .connect { display: grid; grid-template-columns: minmax(0,1fr) auto; gap: 10px; align-items: stretch; }
+  .ip { font: 500 1.05rem var(--mono); background: var(--slab-2); border: 1px solid var(--line); border-radius: 4px; padding: 12px 14px; display: flex; align-items: center; gap: 10px; min-width: 0; }
+  .ip span { overflow-wrap: anywhere; }
+  .ip .live { width: 8px; height: 8px; border-radius: 50%; background: var(--signal); flex: none; }
+  .copy { font: 600 .85rem var(--display); letter-spacing: .08em; text-transform: uppercase; padding: 0 16px; border-radius: 4px; border: 1px solid var(--accent); background: transparent; color: var(--accent); cursor: pointer; }
+  .copy:hover { background: var(--accent); color: var(--night); }
+  .stats { display: grid; grid-template-columns: repeat(4, minmax(0,1fr)); gap: 1px; background: var(--line); border: 1px solid var(--line); border-radius: 4px; overflow: hidden; }
+  .stat { background: var(--slab); padding: 12px; display: grid; gap: 2px; }
+  .stat .k { font: 600 .68rem var(--display); letter-spacing: .18em; text-transform: uppercase; color: var(--frost); }
+  .stat .v { font: 700 1.2rem var(--display); font-variant-numeric: tabular-nums; }
+  .list { list-style: none; margin: 0; padding: 0; display: grid; gap: 12px; }
+  .list li { display: grid; grid-template-columns: 18px minmax(0,1fr); gap: 12px; align-items: start; }
+  .list li::before { content: ""; width: 10px; height: 10px; margin-top: 8px; border: 2px solid var(--accent); transform: rotate(45deg); }
+  .list b { display: block; font-weight: 600; }
+  .list span { color: var(--frost); font-size: .95rem; }
+
+  /* section heads */
+  section.block { padding-block: 72px; }
+  .sec-head { display: grid; gap: 8px; margin-bottom: 32px; max-width: 70ch; }
+  .sec-tag { font: 600 .78rem var(--display); letter-spacing: .26em; text-transform: uppercase; color: var(--blood); }
+  .sec-head h2 { font: 700 clamp(1.8rem, 4vw, 2.6rem)/1.05 var(--display); text-transform: uppercase; margin: 0; }
+  .sec-head p { color: var(--frost); margin: 0; }
+
+  /* raid week */
+  section.raid { border-bottom: 1px solid var(--line); background: linear-gradient(180deg, rgba(216,40,43,.07), transparent 60%); }
+  .raid-grid { display: grid; grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr); gap: 28px; align-items: start; }
+  .week { border: 1px solid var(--line); border-radius: 6px; background: var(--slab); padding: 22px; display: grid; gap: 14px; min-width: 0; }
+  .week-head { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: baseline; gap: 6px 16px; }
+  .week-head h3 { margin: 0; font: 600 1.15rem var(--display); text-transform: uppercase; letter-spacing: .04em; }
+  .raid-state { font: 600 .82rem var(--display); letter-spacing: .14em; text-transform: uppercase; color: var(--frost); }
+  .raid-state.open { color: var(--blood); }
+  .bar { position: relative; height: 46px; border-radius: 4px; background: var(--slab-2); border: 1px solid var(--line); overflow: hidden; }
+  .bar .days { position: absolute; inset: 0; display: grid; grid-template-columns: repeat(7, 1fr); }
+  .bar .days span { border-right: 1px solid var(--line); font: 600 .7rem var(--display); letter-spacing: .14em; text-transform: uppercase; color: var(--frost); padding: 4px 6px; }
+  .bar .days span:last-child { border-right: 0; }
+  .bar .window { position: absolute; top: 0; bottom: 0; left: 69.048%; width: 16.667%;   /* Fri 20:00 -> Sun 00:00 of 168 h */
+    background: repeating-linear-gradient(135deg, rgba(216,40,43,.55) 0 8px, rgba(216,40,43,.35) 8px 16px); border-left: 2px solid var(--blood); border-right: 2px solid var(--blood); }
+  .bar .now { position: absolute; top: -2px; bottom: -2px; width: 2px; background: var(--snow); box-shadow: 0 0 8px var(--snow); display: none; }
+  .legend { display: flex; flex-wrap: wrap; gap: 8px 22px; font-size: .88rem; color: var(--frost); }
+  .legend i { display: inline-block; width: 12px; height: 12px; vertical-align: -1px; margin-right: 6px; border-radius: 2px; }
+  .raid-cards { display: grid; gap: 14px; }
+  .rcard { border: 1px solid var(--line); border-left: 3px solid var(--blood); border-radius: 4px; background: var(--slab); padding: 16px 18px; display: grid; gap: 4px; }
+  .rcard.soft { border-left-color: var(--frost); }
+  .rcard .k { font: 600 .72rem var(--display); letter-spacing: .2em; text-transform: uppercase; color: var(--frost); }
+  .rcard .v { font: 700 1.25rem var(--display); }
+  .rcard p { margin: 0; color: var(--frost); font-size: .93rem; }
+
+  /* wipe tiers */
+  .tiers { display: grid; grid-template-columns: repeat(4, minmax(0,1fr)); gap: 0; border: 1px solid var(--line); border-radius: 6px; overflow: hidden; }
+  .tier { padding: 20px; background: var(--slab); border-right: 1px solid var(--line); display: grid; gap: 6px; position: relative; }
+  .tier:last-child { border-right: 0; }
+  .tier .wk { font: 600 .72rem var(--display); letter-spacing: .2em; text-transform: uppercase; color: var(--frost); }
+  .tier .t { font: 700 2.2rem/1 var(--display); }
+  .tier p { margin: 0; color: var(--frost); font-size: .92rem; }
+  .tier:nth-child(1) .t { color: #c9ccd1; } .tier:nth-child(2) .t { color: var(--ice); } .tier:nth-child(3) .t { color: var(--ember); } .tier:nth-child(4) .t { color: var(--blood); }
+  .tier::after { content: ""; position: absolute; left: 0; right: 0; bottom: 0; height: 3px; }
+  .tier:nth-child(1)::after { background: #c9ccd1; } .tier:nth-child(2)::after { background: var(--ice); } .tier:nth-child(3)::after { background: var(--ember); } .tier:nth-child(4)::after { background: var(--blood); }
+
+  /* features */
+  .grid { display: grid; grid-template-columns: repeat(3, minmax(0,1fr)); gap: 1px; background: var(--line); border: 1px solid var(--line); border-radius: 6px; overflow: hidden; }
+  .feat { background: var(--slab); display: grid; grid-template-rows: auto 1fr; min-width: 0; }
+  .feat .shot { margin: 0; aspect-ratio: 16 / 9; overflow: hidden; border-bottom: 1px solid var(--line); background: var(--slab-2); }
+  .feat .shot img { width: 100%; height: 100%; object-fit: cover; transition: transform .4s; }
+  .feat:hover .shot img { transform: scale(1.04); }
+  .feat .txt { padding: 22px; display: grid; gap: 8px; align-content: start; }
+  .feat .ico { width: 34px; height: 34px; color: var(--blood); }
+  .feat .shot + .txt .ico { display: none; }
+  .feat h3 { font: 600 1.15rem var(--display); margin: 0; letter-spacing: .02em; }
+  .feat p { margin: 0; color: var(--frost); font-size: .95rem; }
+  .chips { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 4px; }
+  .chip { font: 500 .72rem var(--mono); color: var(--frost); border: 1px solid var(--line); border-radius: 3px; padding: 2px 7px; }
+
+  /* gallery */
+  .gallery { display: grid; grid-template-columns: repeat(3, minmax(0,1fr)); gap: 12px; margin-top: 12px; }
+  .gallery figure { margin: 0; border: 1px solid var(--line); border-radius: 6px; overflow: hidden; background: var(--slab); }
+  .gallery img { width: 100%; aspect-ratio: 16 / 9; object-fit: cover; }
+  .gallery figcaption { padding: 10px 14px; font-size: .88rem; color: var(--frost); }
+
+  /* store */
+  section.store { border-top: 1px solid var(--line); background: radial-gradient(40rem 22rem at 100% 0%, rgba(216,40,43,.12), transparent 60%), var(--slab); }
+  .store-top { margin-bottom: 32px; }
+  .store-top .sec-head { margin: 0; }
+  .keycap { display: inline-block; font: 700 .85em var(--mono); color: var(--snow); background: var(--slab-2); border: 1px solid var(--frost); border-bottom-width: 3px; border-radius: 4px; padding: 0 7px; }
+  .store-cols { display: grid; grid-template-columns: repeat(3, minmax(0,1fr)); gap: 20px; }
+  .card { background: var(--night); border: 1px solid var(--line); border-radius: 6px; padding: 22px; display: grid; gap: 12px; align-content: start; min-width: 0; }
+  .card.vip { border-color: rgba(216,40,43,.55); box-shadow: inset 0 0 0 1px rgba(216,40,43,.15); }
+  .card h3 { font: 600 1.2rem var(--display); margin: 0; text-transform: uppercase; letter-spacing: .04em; }
+  .card p { margin: 0; color: var(--frost); font-size: .95rem; }
+  .price { font: 700 2rem/1 var(--display); }
+  .price small { font: 500 .9rem var(--body); color: var(--frost); }
+  table.packs { width: 100%; border-collapse: collapse; font-variant-numeric: tabular-nums; font-size: .95rem; }
+  table.packs th, table.packs td { text-align: left; padding: 7px 0; border-bottom: 1px solid var(--line); }
+  table.packs th { font: 600 .7rem var(--display); letter-spacing: .16em; text-transform: uppercase; color: var(--frost); }
+  table.packs td:last-child, table.packs th:last-child { text-align: right; }
+  .bonus { color: var(--blood); font-weight: 600; font-size: .8rem; margin-left: 6px; }
+  .ticks { list-style: none; margin: 0; padding: 0; display: grid; gap: 8px; }
+  .ticks li { padding-left: 20px; position: relative; color: var(--frost); font-size: .95rem; }
+  .ticks li::before { content: ""; position: absolute; left: 2px; top: .55em; width: 8px; height: 8px; background: var(--blood); transform: rotate(45deg); }
+  .ticks b { color: var(--snow); font-weight: 600; }
+  .extras { margin-top: 20px; display: grid; grid-template-columns: repeat(3, minmax(0,1fr)); gap: 20px; }
+  .extra { border-top: 1px solid var(--line); padding-top: 14px; display: grid; gap: 4px; }
+  .extra b { font: 600 1rem var(--display); letter-spacing: .03em; }
+  .extra span { color: var(--frost); font-size: .92rem; }
+  .soon { font: 600 .65rem var(--display); letter-spacing: .16em; text-transform: uppercase; color: var(--night); background: var(--ember); border-radius: 3px; padding: 1px 6px; margin-left: 6px; vertical-align: 2px; }
+  .store-note { margin-top: 22px; color: var(--frost); font-size: .9rem; display: flex; flex-wrap: wrap; gap: 8px 24px; }
+  .store-note b { color: var(--snow); }
+
+  /* join + cta + footer */
+  .steps { display: grid; grid-template-columns: repeat(3, minmax(0,1fr)); gap: 20px; counter-reset: step; }
+  .step { border-top: 2px solid var(--line); padding-top: 16px; display: grid; gap: 6px; }
+  .step::before { counter-increment: step; content: "Step " counter(step); font: 600 .75rem var(--display); letter-spacing: .2em; text-transform: uppercase; color: var(--blood); }
+  .step h3 { font: 600 1.15rem var(--display); margin: 0; }
+  .step p { margin: 0; color: var(--frost); font-size: .95rem; }
+  code { font: 500 .88em var(--mono); background: var(--slab-2); border: 1px solid var(--line); padding: 0 5px; border-radius: 3px; }
+  .cta-box { display: grid; grid-template-columns: auto minmax(0,1fr) auto; gap: 24px; align-items: center; border: 1px solid var(--line); border-radius: 6px; padding: 28px 32px;
+    background: linear-gradient(100deg, rgba(124,196,240,.08), rgba(216,40,43,.12) 60%, rgba(242,165,65,.08)); }
+  .cta-box img { width: 120px; height: auto; }
+  .cta-box h2 { font: 700 clamp(1.6rem, 3.6vw, 2.3rem)/1.05 var(--display); text-transform: uppercase; margin: 0 0 6px; }
+  .cta-box p { margin: 0; color: var(--frost); }
+  footer { border-top: 1px solid var(--line); padding-block: 28px calc(28px + env(safe-area-inset-bottom, 0px)); color: var(--frost); font-size: .85rem; }
+  footer .inner { display: flex; flex-wrap: wrap; gap: 8px 24px; justify-content: space-between; }
+  .toast { position: fixed; left: 50%; bottom: calc(24px + env(safe-area-inset-bottom, 0px)); transform: translateX(-50%) translateY(20px); opacity: 0; z-index: 30;
+    background: var(--snow); color: var(--night); font: 600 .9rem var(--display); letter-spacing: .06em; padding: 10px 16px; border-radius: 4px; transition: .25s; pointer-events: none; }
+  .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+
+  @media (max-width: 960px) {
+    .hero .inner { grid-template-columns: 1fr; }
+    .hero-logo { order: -1; width: min(320px, 80%); justify-self: start; }
+    .split-field { grid-template-columns: 1fr; }
+    .side.cherno { border-right: 0; border-bottom: 1px solid var(--line); }
+    .side.cherno .side-inner { margin-left: 0; }
+    .raid-grid { grid-template-columns: 1fr; }
+    .tiers { grid-template-columns: repeat(2, minmax(0,1fr)); }
+    .tier:nth-child(2) { border-right: 0; } .tier:nth-child(-n+2) { border-bottom: 1px solid var(--line); }
+    .grid, .gallery { grid-template-columns: repeat(2, minmax(0,1fr)); }
+    .store-top, .store-cols, .extras, .steps, .cta-box { grid-template-columns: 1fr; }
+    .nav nav { display: none; }
+  }
+  @media (max-width: 560px) {
+    .grid, .gallery, .tiers { grid-template-columns: 1fr; }
+    .tier { border-right: 0; border-bottom: 1px solid var(--line); }
+    .stats { grid-template-columns: repeat(2, minmax(0,1fr)); }
+    .bar .days span { font-size: .6rem; padding: 4px 3px; letter-spacing: .06em; }
+  }
+</style>
+</head>
+<body>
+
+<!-- IMAGES: images/<name>.webp or .png (see images/README.txt). Missing ones hide themselves. -->
+
+<header class="nav gutter">
+  <div class="inner">
+    <a href="#top" aria-label="WarBound home"><img src="images/logo.webp" alt="WarBound"></a>
+    <nav aria-label="Sections">
+      <a href="#servers">Servers</a>
+      <a href="#raids">Raids</a>
+      <a href="#features">Features</a>
+      <a href="#store">Store</a>
+      <a href="#join">Join</a>
+    </nav>
+  </div>
+</header>
+
+<section class="hero gutter" id="top">
+  <div class="backdrop" aria-hidden="true"></div>
+  <canvas id="snow" aria-hidden="true"></canvas>
+  <div class="inner">
+    <div class="hero-copy">
+      <div class="eyebrow"><span class="dot"></span>Two servers online · EU</div>
+      <h1>WarBound <em>Official</em></h1>
+      <p class="lede">Modded DayZ on two fully edited maps. Build a base and lock it down, raid other groups on the weekend, climb the event tiers every wipe and fight with endgame gear that makes every firefight count.</p>
+      <div class="hero-actions">
+        <a class="btn primary" href="#servers">Pick your server</a>
+        <a class="btn" href="https://discord.gg/warboundofficial" target="_blank" rel="noopener">Join the Discord</a>
+      </div>
+      <div class="facts">
+        <span><b>80</b> slots per server</span>
+        <span><b>1PP</b> on foot · <b>3PP</b> in vehicles</span>
+        <span><b>Weekend</b> raids</span>
+        <span><b>Wipe-based</b> events</span>
+      </div>
+    </div>
+    <img class="hero-logo" src="images/logo.webp" alt="WarBound logo">
+  </div>
+</section>
+
+<main>
+  <div class="split-field" id="servers">
+
+    <!-- ===================== CHERNARUS (left) ===================== -->
+    <section class="side cherno gutter" aria-labelledby="cherno-title">
+      <div class="side-inner">
+        <div>
+          <div class="map-tag">Server 01 · Winter Edition</div>
+          <h2 id="cherno-title">Chernarus</h2>
+          <p class="sub">The classic map, fully edited and under deep snow. Boosted loot, small groups and no trader NPCs: everything you own, you found or took.</p>
+        </div>
+        <figure class="banner" data-slot><img src="images/chernarus.webp" alt="Chernarus Winter Edition" loading="lazy" onerror="wbImg(this)"></figure>
+        <div class="servername">WARBOUND | Loot++ | Max 4-Man | Winter Edition | No Trader</div>
+        <div class="connect">
+          <div class="ip"><span class="live" aria-hidden="true"></span><span id="ip-cherno">51.89.27.103:3247</span></div>
+          <button class="copy" type="button" data-copy="ip-cherno">Copy IP</button>
+        </div>
+        <div class="stats">
+          <div class="stat"><span class="k">Slots</span><span class="v">80</span></div>
+          <div class="stat"><span class="k">Groups</span><span class="v">Max 4</span></div>
+          <div class="stat"><span class="k">Loot</span><span class="v">Loot++</span></div>
+          <div class="stat"><span class="k">Day / Night</span><span class="v">x3 / x13</span></div>
+        </div>
+        <ul class="list">
+          <li><div><b>Every season rotates</b><span>Winter, spring, summer and autumn weather cycle through on Chernarus, so the map never looks the same for long.</span></div></li>
+          <li><div><b>Winter Chernarus V2</b><span>Snow-covered Chernarus with frozen lakes and cold you have to plan for.</span></div></li>
+          <li><div><b>No trader NPCs</b><span>Gear comes from looting, events and raiding. Loot rotates fast, so you never need a trader.</span></div></li>
+          <li><div><b>Max 4-man groups</b><span>Fair fights for solo players and small squads. No 10-man zergs.</span></div></li>
+          <li><div><b>Loot++</b><span>More and better loot spawns, so you get into the action fast.</span></div></li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- ===================== NAMALSK (right) ===================== -->
+    <section class="side nam gutter" aria-labelledby="nam-title">
+      <div class="side-inner">
+        <div>
+          <div class="map-tag">Server 02 · Newbie Friendly</div>
+          <h2 id="nam-title">Namalsk</h2>
+          <p class="sub">The hardest island in DayZ, fully edited and tuned so new players can still find their feet. Survive the cold, the bunkers and Lantia.</p>
+        </div>
+        <figure class="banner" data-slot><img src="images/namalsk.webp" alt="WarBound Namalsk waiting room with survivor stats" loading="lazy" onerror="wbImg(this)"></figure>
+        <div class="servername">WARBOUND | EU | NAMALSK | Newbie Friendly</div>
+        <div class="connect">
+          <div class="ip"><span class="live" aria-hidden="true"></span><span id="ip-nam">136.243.82.234:3436</span></div>
+          <button class="copy" type="button" data-copy="ip-nam">Copy IP</button>
+        </div>
+        <div class="stats">
+          <div class="stat"><span class="k">Slots</span><span class="v">80</span></div>
+          <div class="stat"><span class="k">Region</span><span class="v">EU</span></div>
+          <div class="stat"><span class="k">Style</span><span class="v">Newbie+</span></div>
+          <div class="stat"><span class="k">Day / Night</span><span class="v">x2 / x16</span></div>
+        </div>
+        <ul class="list">
+          <li><div><b>Two artifacts on Lantia</b><span>Asterix and Obelisk are hidden on Lantia. Find them if you can survive getting there.</span></div></li>
+          <li><div><b>Underground bunkers</b><span>Explore the bunker complexes for high-tier loot, with custom entrances and loot tables.</span></div></li>
+          <li><div><b>Gauss rifle</b><span>The ER7 Gauss rifle is in the loot pool. Good luck finding it.</span></div></li>
+          <li><div><b>Namalsk Survival</b><span>Real cold, heat packs and shelter matter. The island fights back.</span></div></li>
+          <li><div><b>Newbie friendly</b><span>No broken legs and tuned survival, so a bad fall doesn't end your run.</span></div></li>
+        </ul>
+      </div>
+    </section>
+  </div>
+
+  <!-- ===================== RAIDS + WIPE ===================== -->
+  <section class="block raid gutter" id="raids" aria-labelledby="raid-title">
+    <div class="inner">
+      <div class="sec-head">
+        <div class="sec-tag">Raid rules</div>
+        <h2 id="raid-title">Raid on the weekend, rest during the week</h2>
+        <p>Hard raids only run on the weekend, so you can go to work on Monday without losing your base overnight. Only doors can be blown, with C4, and build restrictions stop mega-bases, so raiding stays fair for attackers and defenders.</p>
+      </div>
+      <div class="raid-grid">
+        <div class="week">
+          <div class="week-head">
+            <h3>Hard raid window</h3>
+            <span class="raid-state" id="raid-state">German time (CET)</span>
+          </div>
+          <div class="bar" aria-label="Weekly raid window: Friday 20:00 to Sunday 00:00, German time">
+            <div class="days"><span>Mon</span><span>Tue</span><span>Wed</span><span>Thu</span><span>Fri</span><span>Sat</span><span>Sun</span></div>
+            <div class="window"></div>
+            <div class="now" id="raid-now"></div>
+          </div>
+          <div class="legend">
+            <span><i style="background: var(--blood)"></i>Hard raid (C4 on doors) · Friday 20:00 → Sunday 00:00</span>
+            <span><i style="background: var(--frost)"></i>Soft raid · 24/7</span>
+            <span><i style="background: var(--snow)"></i>Now</span>
+          </div>
+        </div>
+        <div class="raid-cards">
+          <div class="rcard"><span class="k">Hard raid</span><span class="v">Fri 20:00 → Sun 00:00</span><p>Only doors and gates can be raided, and you need C4 to blow them. Walls can't be destroyed.</p></div>
+          <div class="rcard soft"><span class="k">Soft raid</span><span class="v">24/7</span><p>Storage can be cracked any time with a hacking tablet. Safes, lockers and crates are never fully safe.</p></div>
+        </div>
+      </div>
+
+      <div class="sec-head" style="margin-top: 64px">
+        <div class="sec-tag">Every wipe</div>
+        <h2>Events level up every week</h2>
+        <p>All events are wipe-based. They start easy and get harder and richer every week, so a wipe never gets boring.</p>
+      </div>
+      <div class="tiers">
+        <div class="tier"><span class="wk">Week 1</span><span class="t">T1</span><p>Get going: basic gear and first bases.</p></div>
+        <div class="tier"><span class="wk">Week 2</span><span class="t">T2</span><p>Better loot, tougher fights.</p></div>
+        <div class="tier"><span class="wk">Week 3</span><span class="t">T3</span><p>High-tier weapons and armor.</p></div>
+        <div class="tier"><span class="wk">Week 4</span><span class="t">T4</span><p>Endgame loot for the strongest groups.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== FEATURES ===================== -->
+  <section class="block gutter" id="features" aria-labelledby="shared-title">
+    <div class="inner">
+      <div class="sec-head">
+        <div class="sec-tag">Features</div>
+        <h2 id="shared-title">On both servers</h2>
+        <p>One mod pack, two maps. Everything below runs on Chernarus and Namalsk.</p>
+      </div>
+      <div class="grid">
+        <article class="feat">
+          <figure class="shot" data-slot><img src="images/feature-basebuilding.webp" alt="A WarBound base next to the railway" loading="lazy" onerror="wbImg(this)"></figure>
+          <div class="txt">
+            <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M3 21h18M5 21V10l7-6 7 6v11M9 21v-6h6v6"/></svg>
+            <h3>Base building</h3>
+            <p>BaseBuildingPlus walls, gates and doors, with build limits that keep bases raidable and fair.</p>
+            <div class="chips"><span class="chip">BaseBuildingPlus</span><span class="chip">Build limits</span></div>
+          </div>
+        </article>
+        <article class="feat">
+          <figure class="shot" data-slot><img src="images/feature-locks.webp" alt="Safes, crates and gun racks" loading="lazy" onerror="wbImg(this)"></figure>
+          <div class="txt">
+            <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><rect x="5" y="10" width="14" height="11" rx="1.5"/><path d="M8 10V7a4 4 0 0 1 8 0v3M12 14v3"/></svg>
+            <h3>Code locks &amp; safes</h3>
+            <p>Safes, lockers, gun cases, crates and racks. Lock them with a Code Lock or the vanilla digital code lock.</p>
+            <div class="chips"><span class="chip">Paragon Storage</span><span class="chip">Code Lock</span><span class="chip">Digital lock</span></div>
+          </div>
+        </article>
+        <article class="feat">
+          <figure class="shot" data-slot><img src="images/feature-raiding.webp" alt="Hacking tablet in the inventory" loading="lazy" onerror="wbImg(this)"></figure>
+          <div class="txt">
+            <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M12 3v3M12 18v3M3 12h3M18 12h3M6 6l2 2M16 16l2 2M6 18l2-2M16 8l2-2"/><circle cx="12" cy="12" r="3.5"/></svg>
+            <h3>Raiding</h3>
+            <p>Blow doors with C4 in the weekend raid window, crack storage with a hacking tablet 24/7, and get raid alerts when someone hits your base. Walls can't be broken.</p>
+            <div class="chips"><span class="chip">C4 on doors</span><span class="chip">Hacking tablet</span><span class="chip">Raid alerts</span></div>
+          </div>
+        </article>
+        <article class="feat">
+          <figure class="shot" data-slot><img src="images/feature-gear.webp" alt="Gun wall full of modded weapons" loading="lazy" onerror="wbImg(this)"></figure>
+          <div class="txt">
+            <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M4 14l10-10 3 3-10 10H4v-3zM13 5l3 3M3 21h18"/></svg>
+            <h3>Endgame weapons &amp; gear</h3>
+            <p>Modded guns and bullets with very durable endgame gear, so fights stay balanced and long instead of one-tap.</p>
+            <div class="chips"><span class="chip">SNAFU</span><span class="chip">FOG</span><span class="chip">Full body armor</span></div>
+          </div>
+        </article>
+        <article class="feat">
+          <figure class="shot" data-slot><img src="images/feature-events.webp" alt="Event zone at night" loading="lazy" onerror="wbImg(this)"></figure>
+          <div class="txt">
+            <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M12 3l2.5 5 5.5.8-4 3.9.9 5.5L12 15.6 7.1 18.2l.9-5.5-4-3.9L9.5 8z"/></svg>
+            <h3>Events &amp; keycards</h3>
+            <p>Airdrops, loot chests and world events that level up from T1 to T4 every wipe, plus a keycard system that opens locked loot rooms.</p>
+            <div class="chips"><span class="chip">Airdrops</span><span class="chip">Loot chests</span><span class="chip">Keycards</span></div>
+          </div>
+        </article>
+        <article class="feat">
+          <figure class="shot" data-slot><img src="images/feature-teleports.webp" alt="Teleport out of a danger zone" loading="lazy" onerror="wbImg(this)"></figure>
+          <div class="txt">
+            <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><circle cx="12" cy="12" r="8"/><path d="M12 4v4M12 16v4M4 12h4M16 12h4"/></svg>
+            <h3>Safe teleports</h3>
+            <p>Special teleports get you safely out of danger spots like Lantia or the bunkers, to a random spot on the map.</p>
+            <div class="chips"><span class="chip">Lantia</span><span class="chip">Bunkers</span><span class="chip">Random exit</span></div>
+          </div>
+        </article>
+        <article class="feat">
+          <figure class="shot" data-slot><img src="images/feature-heal.webp" alt="First aid kit in the inventory" loading="lazy" onerror="wbImg(this)"></figure>
+          <div class="txt">
+            <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><rect x="4" y="6" width="16" height="13" rx="2"/><path d="M12 9.5v6M9 12.5h6M9 6V4h6v2"/></svg>
+            <h3>IFAK heal system</h3>
+            <p>A special heal system with IFAKs and saline. Patch yourself or your teammate up mid-fight and get back in.</p>
+            <div class="chips"><span class="chip">IFAK</span><span class="chip">Saline</span><span class="chip">Paragon Gear</span></div>
+          </div>
+        </article>
+        <article class="feat">
+          <figure class="shot" data-slot><img src="images/feature-vehicles.webp" alt="Helicopter flying over Chernarus" loading="lazy" onerror="wbImg(this)"></figure>
+          <div class="txt">
+            <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M2 8h20M12 8v4M7 12h10l2 4H5l2-4zM9 16v3M15 16v3"/></svg>
+            <h3>Vehicles &amp; helicopters</h3>
+            <p>Expansion cars, boats and helis in 3rd person. Eat and drink while you drive or fly, as pilot or passenger. Rolled your car? Press <code>F6</code> to flip it.</p>
+            <div class="chips"><span class="chip">Expansion</span><span class="chip">Eat while driving</span><span class="chip">Vehicle flip</span></div>
+          </div>
+        </article>
+        <article class="feat">
+          <figure class="shot" data-slot><img src="images/feature-storage.webp" alt="Shelves with storage cases" loading="lazy" onerror="wbImg(this)"></figure>
+          <div class="txt">
+            <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><rect x="3" y="6" width="18" height="13" rx="1.5"/><path d="M8 6V4h8v2M3 11h18"/></svg>
+            <h3>Storage that works</h3>
+            <p>Shelves, gun walls and gear stands. Backpacks and vests on stands keep their items through restarts.</p>
+            <div class="chips"><span class="chip">Gear stands</span><span class="chip">Virtual storage</span><span class="chip">Cargo sorting</span></div>
+          </div>
+        </article>
+        <article class="feat">
+          <figure class="shot" data-slot><img src="images/feature-stats.webp" alt="Group map with markers, keycards and safe zones" loading="lazy" onerror="wbImg(this)"></figure>
+          <div class="txt">
+            <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M4 20V10M10 20V4M16 20v-7M22 20H2"/></svg>
+            <h3>Groups &amp; stats</h3>
+            <p>All your stats are recorded. Check them in the waiting room before you spawn. Advanced groups, map markers and a killfeed too.</p>
+            <div class="chips"><span class="chip">Player stats</span><span class="chip">LBmaster Groups</span><span class="chip">Killfeed</span></div>
+          </div>
+        </article>
+        <article class="feat">
+          <figure class="shot" data-slot><img src="images/feature-survival.webp" alt="Pizza box on a shop counter" loading="lazy" onerror="wbImg(this)"></figure>
+          <div class="txt">
+            <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M12 3l9 16H3z"/><path d="M12 9v4M12 16h.01"/></svg>
+            <h3>Survival, fixed</h3>
+            <p>Pox is completely removed, so toxic gas won't infect you. Pizza boxes and drink boxes around the map keep you fed.</p>
+            <div class="chips"><span class="chip">No pox</span><span class="chip">Pizza boxes</span><span class="chip">Drink boxes</span></div>
+          </div>
+        </article>
+        <article class="feat">
+          <figure class="shot" data-slot><img src="images/feature-performance.webp" alt="Aerial view of an edited military base" loading="lazy" onerror="wbImg(this)"></figure>
+          <div class="txt">
+            <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M4 12h4l2-5 4 10 2-5h4"/></svg>
+            <h3>Smooth &amp; different</h3>
+            <p>Hardware picked for DayZ, so it runs smooth even with a full server. Full map edits make it feel like a different world, and a FOV mod lets you pick your view.</p>
+            <div class="chips"><span class="chip">Top hardware</span><span class="chip">Map edits</span><span class="chip">FOV choice</span></div>
+          </div>
+        </article>
+      </div>
+
+      <div class="gallery">
+        <figure data-slot><img src="images/gallery-1.webp" alt="Base with military radio and generator" loading="lazy" onerror="wbImg(this)"><figcaption>Kit out your base: radios, generators, workbenches.</figcaption></figure>
+        <figure data-slot><img src="images/gallery-2.webp" alt="Workbench, sleeping mat and armor crate" loading="lazy" onerror="wbImg(this)"><figcaption>Armor crates, tool chests and more to fill it with.</figcaption></figure>
+        <figure data-slot><img src="images/gallery-3.webp" alt="Safe Zone Teleport menu" loading="lazy" onerror="wbImg(this)"><figcaption>The safe teleport: random destination, out of danger.</figcaption></figure>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== WARBOUND STORE ===================== -->
+  <section class="block store gutter" id="store" aria-labelledby="store-title">
+    <div class="inner">
+      <div class="store-top">
+        <div class="sec-head">
+          <div class="sec-tag">Warbound Store</div>
+          <h2 id="store-title">Support the server, gear up faster</h2>
+          <p>Open the store in game with <span class="keycap">Insert</span>. Pick a category – Basebuilding, Storage, Vehicles, Medical, Food &amp; Drink, Tools – and buy with coins. Items go straight into your inventory, cars spawn ready to drive in front of you.</p>
+        </div>
+      </div>
+
+      <div class="store-cols">
+        <div class="card">
+          <h3>Coins</h3>
+          <p>Buy on <a href="https://warboundshop.com/" target="_blank" rel="noopener">warboundshop.com</a> with PayPal, card or SEPA. Coins arrive in game within about a minute, even if you're offline.</p>
+          <table class="packs">
+            <thead><tr><th>You pay</th><th>You get</th></tr></thead>
+            <tbody>
+              <tr><td>3 €</td><td>3 coins</td></tr>
+              <tr><td>5 €</td><td>5 coins</td></tr>
+              <tr><td>10 €</td><td>10 coins</td></tr>
+              <tr><td>20 €</td><td>22 coins<span class="bonus">+10%</span></td></tr>
+              <tr><td>50 €</td><td>55 coins<span class="bonus">+10%</span></td></tr>
+              <tr><td>100 €</td><td>110 coins<span class="bonus">+10%</span></td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="card vip">
+          <h3>VIP</h3>
+          <div class="price">10 € <small>/ 30 days</small></div>
+          <ul class="ticks">
+            <li><b>No login queue</b> – skip the line when the server is full</li>
+            <li><b>[VIP] chat tag</b> in front of your name</li>
+            <li><b>5 free coins</b> a month instead of 3</li>
+          </ul>
+          <p>Buy it from the gold VIP button in the store or on the website. Buying again adds 30 more days.</p>
+        </div>
+        <div class="card">
+          <h3>Free coins</h3>
+          <div class="price">3 <small>coins every month</small></div>
+          <ul class="ticks">
+            <li>Wear the <b>WARBOUND server tag</b> on your Discord profile</li>
+            <li>Link your Steam ID once in our Discord</li>
+            <li>Click <b>Claim Coins</b> every month and pick your server</li>
+          </ul>
+          <p>5 coins a month with VIP.</p>
+        </div>
+      </div>
+
+      <div class="extras">
+        <div class="extra"><b>Colored chat</b><span>Stand out in chat with a color of your choice, ready in the store now.</span></div>
+        <div class="extra"><b>Clan clothing skins<span class="soon">Coming</span></b><span>Your clan's own skins on clothing, coming to the store.</span></div>
+        <div class="extra"><b>WarBound Cards &amp; giveaways</b><span>Find WarBound Cards around the map for free coins. Every wipe has a giveaway.</span></div>
+      </div>
+
+      <div class="store-note">
+        <span><b>Per server:</b> coins and VIP for Chernarus only work on Chernarus, the same for Namalsk.</span>
+        <span><b>Every euro goes back into the server:</b> hosting, mods and anti-cheat.</span>
+      </div>
+      <div class="hero-actions" style="margin-top: 24px">
+        <a class="btn primary" href="https://warboundshop.com/" target="_blank" rel="noopener">Visit the Warbound Shop</a>
+        <a class="btn" href="https://discord.gg/warboundofficial" target="_blank" rel="noopener">Claim free coins on Discord</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== HOW TO JOIN ===================== -->
+  <section class="block gutter" id="join" aria-labelledby="join-title">
+    <div class="inner">
+      <div class="sec-head">
+        <div class="sec-tag">Join</div>
+        <h2 id="join-title">How to join</h2>
+        <p>Takes a few minutes the first time. After that it's one click.</p>
+      </div>
+      <div class="steps">
+        <div class="step"><h3>Get the launcher</h3><p>Use the official DayZ Launcher or DZSA Launcher. Search for <code>WARBOUND</code> in the server list.</p></div>
+        <div class="step"><h3>Load the mods</h3><p>Join once and the launcher subscribes you to every mod. Our own packs are <code>@WARBOUNDEXPANSION</code> and <code>@WARBOUNDFIXPACK</code>.</p></div>
+        <div class="step"><h3>Pick a map &amp; play</h3><p>Chernarus for small-squad PvP with boosted loot and rotating seasons, Namalsk for the island at its harshest.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== CTA ===================== -->
+  <section class="block gutter" style="padding-top:0">
+    <div class="inner">
+      <div class="cta-box">
+        <img src="images/logo.webp" alt="" aria-hidden="true">
+        <div>
+          <h2>Join the WarBound community</h2>
+          <p>Patch notes, events, raids, giveaways, free coins and support are all on our Discord. See you out there.</p>
+        </div>
+        <a class="btn primary" href="https://discord.gg/warboundofficial" target="_blank" rel="noopener">Join the Discord</a>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="gutter">
+  <div class="inner">
+    <span>© 2026 WarBound Official</span>
+    <span>DayZ is a trademark of Bohemia Interactive. This is a community server, not affiliated with Bohemia Interactive.</span>
+  </div>
+</footer>
+
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+<script>
+  // copy IP buttons
+  const toast = document.getElementById('toast');
+  function showToast(text) { toast.textContent = text; toast.classList.add('show'); clearTimeout(showToast.t); showToast.t = setTimeout(() => toast.classList.remove('show'), 1800); }
+  document.querySelectorAll('.copy').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const ip = document.getElementById(btn.dataset.copy).textContent.trim();
+      const ok = () => showToast('Copied ' + ip);
+      if (navigator.clipboard) navigator.clipboard.writeText(ip).then(ok, () => showToast(ip));
+      else showToast(ip);
+    });
+  });
+
+  // raid window: Friday 20:00 -> Sunday 00:00, German time (Europe/Berlin)
+  (function () {
+    const state = document.getElementById('raid-state'), marker = document.getElementById('raid-now');
+    function berlinNow() {
+      const p = new Intl.DateTimeFormat('en-GB', { timeZone: 'Europe/Berlin', weekday: 'short', hour: '2-digit', minute: '2-digit', hourCycle: 'h23' }).formatToParts(new Date());
+      const get = t => p.find(x => x.type === t).value;
+      const day = ['Mon','Tue','Wed','Thu','Fri','Sat','Sun'].indexOf(get('weekday'));
+      return day * 24 + (+get('hour')) + (+get('minute')) / 60;   // hours since Monday 00:00
+    }
+    function fmt(h) { const d = Math.floor(h / 24), r = Math.round(h % 24); return (d ? d + 'd ' : '') + r + 'h'; }
+    function update() {
+      let h; try { h = berlinNow(); } catch (e) { return; }
+      const start = 4 * 24 + 20, end = 6 * 24;                     // Fri 20:00, Sun 00:00
+      marker.style.left = (h / 168 * 100) + '%'; marker.style.display = 'block';
+      if (h >= start && h < end) { state.textContent = 'Raid window open · closes in ' + fmt(end - h); state.classList.add('open'); }
+      else { const wait = h < start ? start - h : 168 - h + start; state.textContent = 'Opens in ' + fmt(wait) + ' · German time'; state.classList.remove('open'); }
+    }
+    update(); setInterval(update, 60000);
+  })();
+
+  // light snowfall in the hero (off for reduced motion)
+  (function () {
+    const c = document.getElementById('snow');
+    if (!c || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    const ctx = c.getContext('2d');
+    let w, h, flakes;
+    function resize() {
+      const r = c.getBoundingClientRect(); w = c.width = r.width * devicePixelRatio; h = c.height = r.height * devicePixelRatio;
+      flakes = Array.from({ length: Math.round(r.width / 9) }, () => ({ x: Math.random() * w, y: Math.random() * h, r: (Math.random() * 1.6 + .4) * devicePixelRatio, s: Math.random() * .6 + .25, d: Math.random() * 6.28 }));
+    }
+    function tick() {
+      ctx.clearRect(0, 0, w, h); ctx.fillStyle = 'rgba(236,238,240,.8)';
+      for (const f of flakes) {
+        f.y += f.s * devicePixelRatio; f.d += .01; f.x += Math.sin(f.d) * .3 * devicePixelRatio;
+        if (f.y > h) { f.y = -4; f.x = Math.random() * w; }
+        ctx.beginPath(); ctx.arc(f.x, f.y, f.r, 0, 6.28); ctx.fill();
+      }
+      requestAnimationFrame(tick);
+    }
+    resize(); addEventListener('resize', resize); tick();
+  })();
+</script>
+</body>
+</html>
